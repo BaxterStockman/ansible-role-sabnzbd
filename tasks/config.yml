@@ -1,0 +1,10 @@
+- name: config | add individual settings
+  ini_file:
+    dest: '{{ sabnzbd_config_file }}'
+    section: '{{ sabnzbd_settings_section.key }}'
+    option: '{{ sabnzbd_setting.key }}'
+    value: '{{ sabnzbd_setting.value }}'
+    state: present
+  loop_control:
+    loop_var: sabnzbd_setting
+  with_dict: '{{ sabnzbd_settings_section.value }}'

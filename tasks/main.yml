@@ -1,0 +1,57 @@
+---
+# tasks file for ansible-role-sabnzbd
+- name: main | create supplementary groups
+  group:
+    name: '{{ sabnzbd_systemd_supplementary_group }}'
+  loop_control:
+    loop_var: sabnzbd_systemd_supplementary_group
+  with_items: '{{ sabnzbd_systemd_supplementary_groups }}'
+  when: sabnzbd_systemd_supplementary_groups | length > 0
+
+- name: main | create custom systemd configuration directory
+  file:
+    path: '{{ sabnzbd_systemd_custom_config | dirname }}'
+    state: directory
+
+- name: main | template custom systemd configuration
+  template:
+    src: sabnzbd.service.j2
+    dest: '{{ sabnzbd_systemd_custom_config }}'
+
+- name: main | create sabnzbd user
+  user:
+    name: sabnzbd
+    group: sabnzbd
+    shell: '/sbin/nologin'
+    state: present
+
+- name: main | create data dir and config file parent dir
+  file:
+    path: '{{ sabnzbd_dir }}'
+    state: directory
+    recurse: yes
+    owner: sabnzbd
+    group: sabnzbd
+  loop_control:
+    loop_var: sabnzbd_dir
+  with_items:
+    - '{{ sabnzbd_data_dir }}'
+    - '{{ sabnzbd_config_file | dirname }}'
+
+- name: main | create environment file directory
+  file:
+    path: '{{ sabnzbd_environment_file | dirname }}'
+    state: directory
+
+- name: main | create sabnzbd environment file
+  template:
+    src: sabnzbd.conf.d.j2
+    dest: '{{ sabnzbd_environment_file }}'
+
+- name: main | tweak sabnzbd's configuration file
+  sabnzbd_config:
+    dest: '{{ sabnzbd_config_file }}'
+    libdir: /opt/sabnzbd
+    settings: '{{ sabnzbd_settings }}'
+    state: batch
+

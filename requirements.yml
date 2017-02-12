@@ -1,0 +1,3 @@
+- role: BaxterStockman.sabnzbd
+  src: 'https://github.com/BaxterStockman/ansible-role-sabnzbd.git'
+  scm: git

@@ -1,0 +1,7 @@
+---
+# defaults file for ansible-role-sabnzbd
+sabnzbd_systemd_supplementary_groups:
+  - downloads
+sabnzbd_settings: {}
+sabnzbd_data_dir: /var/data/sabnzbd
+sabnzbd_config_file: '{{ sabnzbd_data_dir }}/sabnzbd.ini'

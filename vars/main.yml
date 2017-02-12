@@ -1,0 +1,4 @@
+---
+# vars file for ansible-role-sabnzbd
+sabnzbd_systemd_custom_config: /etc/systemd/system/sabnzbd.service.d/custom.conf
+sabnzbd_environment_file: /etc/conf.d/sabnzbd

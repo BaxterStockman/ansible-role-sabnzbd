@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+[Service]
+{% if sabnzbd_systemd_supplementary_groups | length > 0 %}
+SupplementaryGroups={{ sabnzbd_systemd_supplementary_groups | join(' ') }}
+{% endif %}
+ExecStart=
+ExecStart=/opt/sabnzbd/SABnzbd.py -l0 -f {{ sabnzbd_config_file }}
